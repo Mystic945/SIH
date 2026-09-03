@@ -1,0 +1,164 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 33% 98%;
+    --foreground: 150 20% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 150 20% 10%;
+
+    --primary: 142 72% 29%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 38 92% 50%;
+    --secondary-foreground: 30 40% 12%;
+
+    --muted: 150 12% 95%;
+    --muted-foreground: 150 8% 40%;
+
+    --accent: 152 40% 94%;
+    --accent-foreground: 142 72% 22%;
+
+    --destructive: 0 72% 48%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 150 12% 88%;
+    --input: 150 12% 88%;
+    --ring: 142 72% 34%;
+
+    --radius: 0.85rem;
+  }
+
+  .dark {
+    --background: 155 25% 6%;
+    --foreground: 150 15% 96%;
+
+    --card: 155 22% 9%;
+    --card-foreground: 150 15% 96%;
+
+    --primary: 142 62% 45%;
+    --primary-foreground: 155 30% 6%;
+
+    --secondary: 38 92% 55%;
+    --secondary-foreground: 30 40% 10%;
+
+    --muted: 155 18% 14%;
+    --muted-foreground: 150 10% 65%;
+
+    --accent: 155 22% 15%;
+    --accent-foreground: 142 62% 62%;
+
+    --destructive: 0 65% 52%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 155 15% 18%;
+    --input: 155 15% 18%;
+    --ring: 142 62% 45%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'ss01';
+  }
+
+  /* Devanagari needs a touch more line height to stay readable at small sizes. */
+  :lang(hi) {
+    @apply font-deva leading-relaxed;
+  }
+
+  ::selection {
+    @apply bg-primary/20;
+  }
+}
+
+@layer components {
+  /* ---- 21st.dev-style surface primitives ---------------------------------- */
+
+  .glass-panel {
+    @apply border border-white/15 bg-white/70 backdrop-blur-xl dark:border-white/10 dark:bg-white/5;
+  }
+
+  .spotlight-card {
+    @apply relative overflow-hidden rounded-[var(--radius)] border bg-card;
+  }
+
+  /* Radial highlight that follows the pointer, fed by --mx/--my from React. */
+  .spotlight-card::before {
+    content: '';
+    @apply pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300;
+    background: radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, 50%),
+      hsl(var(--primary) / 0.12),
+      transparent 65%
+    );
+  }
+
+  .spotlight-card:hover::before {
+    @apply opacity-100;
+  }
+
+  .shiny-text {
+    background: linear-gradient(
+      110deg,
+      hsl(var(--foreground)) 35%,
+      hsl(var(--primary)) 50%,
+      hsl(var(--foreground)) 65%
+    );
+    background-size: 200% 100%;
+    @apply animate-shimmer bg-clip-text text-transparent;
+  }
+
+  .grid-backdrop {
+    background-image: linear-gradient(hsl(var(--border) / 0.55) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.55) 1px, transparent 1px);
+    background-size: 46px 46px;
+    mask-image: radial-gradient(ellipse 75% 60% at 50% 0%, #000 55%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 75% 60% at 50% 0%, #000 55%, transparent 100%);
+  }
+
+  .focus-ring {
+    @apply outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+  }
+
+  /* Large tap targets — many farmers use low-end phones one-handed. */
+  .tap-target {
+    @apply min-h-[48px] px-4;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Respect reduced-motion: keep the information, drop the movement. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,29 @@
+# dependencies
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# env — never commit real Atlas credentials
+.env
+.env.local
+.env.*.local
+
+# build output
+dist/
+build/
+*.tsbuildinfo
+
+# logs
+*.log
+.express.log
+.fastapi.log
+.vite.log
+npm-debug.log*
+
+# editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
